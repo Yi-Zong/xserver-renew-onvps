@@ -170,21 +170,21 @@ def pick_screenshot(start_ts: float | None = None):
 
 
 def build_message(label: str, run_ok: bool, need_sign: bool, sign_status: str, expiry: str, screenshot_path: str | None = None, image_url: str | None = None):
-    status_emoji = '✅' if run_ok else '❌'
-    need_emoji = '🟡' if need_sign else '⚪️'
-    msg = (
-        f"🖥 XServer 续期\n"
-        f"👤 账号：{label}\n"
-        f"{status_emoji} 运行：{'成功' if run_ok else '失败'}\n"
-        f"{need_emoji} 今日是否需要续期：{'需要' if need_sign else '不需要'}\n"
-        f"📌 结果：{sign_status}\n"
-        f"📅 到期时间：{expiry}"
-    )
+    title = '🖥 XServer 续期结果'
+    status_line = '✅ 运行成功' if run_ok else '❌ 运行失败'
+    need_line = '🟡 今天需要续期' if need_sign else '⚪️ 今天无需续期'
+
+    lines = [
+        title,
+        f'账号：{label}',
+        status_line,
+        need_line,
+    ]
     if screenshot_path:
-        msg += f"\n🖼 截图：{Path(screenshot_path).name}"
+        lines.append(f'🖼 截图：{Path(screenshot_path).name}')
     if image_url:
-        msg += f"\n🔗 图片链接：{image_url}"
-    return msg
+        lines.append(f'🔗 图片链接：{image_url}')
+    return '\n'.join(lines)
 
 
 def main():
